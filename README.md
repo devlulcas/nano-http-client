@@ -1,3 +1,5 @@
+# MICRO API CLIENT
+
 First, you need to instantiate the client with a base URL.
 
 ```ts
