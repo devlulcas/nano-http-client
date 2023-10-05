@@ -3,8 +3,8 @@
  * The response property contains the response from the server.
  */
 export class HttpError extends Error {
-	constructor(public response: Response) {
-		super(response.statusText);
+	constructor(public response?: Response) {
+		super(response?.statusText);
 	}
 }
 
@@ -12,8 +12,10 @@ export class HttpError extends Error {
  * A custom RequestInit interface that allows for the `searchParams` property and the `body` property to be of type `Record<string, any>`.
  */
 type CustomRequestInit = Omit<RequestInit, 'searchParams' | 'body'> & {
-	searchParams?: Record<string, unknown> | URLSearchParams;
-	body?: Record<string, unknown> | FormData | URLSearchParams | string;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	searchParams?: Record<string, any> | URLSearchParams;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	body?: Record<string, any> | FormData | URLSearchParams | string;
 };
 
 /**
@@ -125,7 +127,7 @@ export class HttpClient {
 			return requestInit.body;
 		}
 
-		const contentType = requestInit.headers?.['Content-Type'] ?? '';
+		const contentType = new Headers(requestInit.headers).get('content-type') ?? '';
 
 		if (contentType.includes('application/json') || contentType.includes('text/plain')) {
 			return JSON.stringify(requestInit.body);
@@ -144,6 +146,8 @@ export class HttpClient {
 		if (contentType.includes('application/x-www-form-urlencoded')) {
 			return new URLSearchParams(requestInit.body as Record<string, string>);
 		}
+
+		return undefined;
 	}
 
 	/**
@@ -157,6 +161,42 @@ export class HttpClient {
 				...this.requestInit.headers,
 				...options?.headers,
 			},
+		};
+	}
+
+	private async mapResponse<T>(
+		response: Response,
+		actions?: ResponseActions<T>['actions'],
+	): Promise<HttpClientResult<T>> {
+		const shouldParseAsJson = response.headers?.get('content-type')?.includes('application/json');
+
+		const data = shouldParseAsJson ? await response.json() : await response.text();
+
+		if (actions) {
+			let mappedData = data;
+
+			if (actions.typeGuard && !actions.typeGuard(data)) {
+				return {
+					ok: false,
+					error: new HttpError(response),
+				};
+			}
+
+			if (actions.mapOk) {
+				mappedData = actions.mapOk(data);
+			}
+
+			return {
+				ok: true,
+				data: mappedData,
+				response,
+			};
+		}
+
+		return {
+			ok: true,
+			data,
+			response,
 		};
 	}
 
@@ -183,61 +223,31 @@ export class HttpClient {
 		const searchParams = this.getSearchParamsFromRequestInit(requestInit);
 		urlObj.search = searchParams.toString();
 
-		// Make the request
-		const response = await transformThrowIntoResponse(
-			async () => await this.fetch(urlObj, requestOptions),
-		);
+		try {
+			// Make the request
+			const response = await this.fetch(urlObj, requestOptions);
 
-		if (response.ok) {
-			const shouldParseAsJson = response.headers?.get('content-type')?.includes('application/json');
+			// If the request was successful, return the result
+			if (response.ok) {
+				return this.mapResponse<T>(response, actions);
+			}
 
-			const data = shouldParseAsJson ? await response.json() : await response.text();
+			const error = new HttpError(response);
 
-			if (actions) {
-				let mappedData = data;
-
-				if (actions.typeGuard && !actions.typeGuard(data)) {
-					return {
-						ok: false,
-						error: new HttpError(response),
-					};
-				}
-
-				if (actions.mapOk) {
-					mappedData = actions.mapOk(data);
-				}
-
-				return {
-					ok: true,
-					data: mappedData,
-					response,
-				};
+			// If a custom error handler is provided, call it
+			if (this.customErrorHandler) {
+				this.customErrorHandler(error);
 			}
 
 			return {
-				ok: true,
-				data,
-				response,
+				ok: false,
+				error: actions?.mapError ? actions.mapError(error) : error,
+			};
+		} catch (error) {
+			return {
+				ok: false,
+				error: new HttpError(),
 			};
 		}
-
-		const error = new HttpError(response);
-
-		if (this.customErrorHandler) {
-			this.customErrorHandler(error);
-		}
-
-		return {
-			ok: false,
-			error: actions?.mapError ? actions.mapError(error) : error,
-		};
-	}
-}
-
-async function transformThrowIntoResponse(fn: () => Promise<Response>): Promise<Response> {
-	try {
-		return fn();
-	} catch (e) {
-		return new Response(e, { status: 500 });
 	}
 }
