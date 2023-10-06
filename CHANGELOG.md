@@ -1,5 +1,11 @@
 # nano-http-client
 
+## 2.0.1
+
+### Patch Changes
+
+- remove secondary entry file
+
 ## 2.0.0
 
 ### Major Changes

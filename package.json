@@ -1,6 +1,6 @@
 {
 	"name": "nano-http-client",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "A nano http client for node.js and the browser based on fetch",
 	"packageManager": "pnpm@8.8.0",
 	"scripts": {
