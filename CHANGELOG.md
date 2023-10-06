@@ -1,5 +1,11 @@
 # nano-http-client
 
+## 3.0.1
+
+### Patch Changes
+
+- update the examples in the docs
+
 ## 3.0.0
 
 ### Major Changes
