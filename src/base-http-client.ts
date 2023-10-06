@@ -73,9 +73,7 @@ export type HttpClientResult<T> =
  */
 export type ResponseActions<T> = {
 	actions?: {
-		typeGuard?: (data: unknown) => data is T;
-		mapOk?: <MT>(data: T) => MT;
-		mapError?: <ME>(error: HttpError) => ME;
+		typeGuard: (data: unknown) => data is T;
 	};
 };
 
@@ -173,17 +171,13 @@ export class BaseHttpClient {
 		const data = shouldParseAsJson ? await response.json() : await response.text();
 
 		if (actions) {
-			let mappedData = data;
+			const mappedData = data;
 
 			if (actions.typeGuard && !actions.typeGuard(data)) {
 				return {
 					ok: false,
 					error: new HttpError(response),
 				};
-			}
-
-			if (actions.mapOk) {
-				mappedData = actions.mapOk(data);
 			}
 
 			return {
@@ -241,7 +235,7 @@ export class BaseHttpClient {
 
 			return {
 				ok: false,
-				error: actions?.mapError ? actions.mapError(error) : error,
+				error: error,
 			};
 		} catch (error) {
 			return {
