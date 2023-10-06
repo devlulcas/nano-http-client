@@ -1,78 +1,73 @@
-import {
-	BaseHttpClient,
-	CustomRequestInit,
-	HttpClientOptions,
-	HttpClientResult,
-	ResponseActions,
-} from './base-http-client.js';
+import { NanoHttpClientBase } from './base.js';
+import { HttpClientOptions, HttpClientResult, SpecificRequestOptions } from './types.js';
 
-type EndpointOptions<T> = Omit<CustomRequestInit, 'method'> & ResponseActions<T>;
-
-export class HttpClient extends BaseHttpClient {
+class NanoHttpClient extends NanoHttpClientBase {
 	constructor(options: HttpClientOptions) {
 		super(options);
 	}
 
-	public async get<T>(url: string, options?: EndpointOptions<T>): Promise<HttpClientResult<T>> {
-		return this.request<T>(url, {
+	public async get<T>(options: SpecificRequestOptions<T>): Promise<HttpClientResult<T>> {
+		return this.request<T>({
 			...options,
 			method: 'GET',
 		});
 	}
 
-	public async post<T>(url: string, options?: EndpointOptions<T>): Promise<HttpClientResult<T>> {
-		return this.request<T>(url, {
+	public async post<T>(options: SpecificRequestOptions<T>): Promise<HttpClientResult<T>> {
+		return this.request<T>({
 			...options,
 			method: 'POST',
 		});
 	}
 
-	public async put<T>(url: string, options?: EndpointOptions<T>): Promise<HttpClientResult<T>> {
-		return this.request<T>(url, {
+	public async put<T>(options: SpecificRequestOptions<T>): Promise<HttpClientResult<T>> {
+		return this.request<T>({
 			...options,
 			method: 'PUT',
 		});
 	}
 
-	public async patch<T>(url: string, options?: EndpointOptions<T>): Promise<HttpClientResult<T>> {
-		return this.request<T>(url, {
+	public async patch<T>(options: SpecificRequestOptions<T>): Promise<HttpClientResult<T>> {
+		return this.request<T>({
 			...options,
 			method: 'PATCH',
 		});
 	}
 
-	public async delete<T>(url: string, options?: EndpointOptions<T>): Promise<HttpClientResult<T>> {
-		return this.request<T>(url, {
+	public async delete<T>(options: SpecificRequestOptions<T>): Promise<HttpClientResult<T>> {
+		return this.request<T>({
 			...options,
 			method: 'DELETE',
 		});
 	}
 
-	public async head<T>(url: string, options?: EndpointOptions<T>): Promise<HttpClientResult<T>> {
-		return this.request<T>(url, {
+	public async head<T>(options: SpecificRequestOptions<T>): Promise<HttpClientResult<T>> {
+		return this.request<T>({
 			...options,
 			method: 'HEAD',
 		});
 	}
 
-	public async options<T>(url: string, options?: EndpointOptions<T>): Promise<HttpClientResult<T>> {
-		return this.request<T>(url, {
+	public async options<T>(options: SpecificRequestOptions<T>): Promise<HttpClientResult<T>> {
+		return this.request<T>({
 			...options,
 			method: 'OPTIONS',
 		});
 	}
 
-	public async trace<T>(url: string, options?: EndpointOptions<T>): Promise<HttpClientResult<T>> {
-		return this.request<T>(url, {
+	public async trace<T>(options: SpecificRequestOptions<T>): Promise<HttpClientResult<T>> {
+		return this.request<T>({
 			...options,
 			method: 'TRACE',
 		});
 	}
 
-	public async connect<T>(url: string, options?: EndpointOptions<T>): Promise<HttpClientResult<T>> {
-		return this.request<T>(url, {
+	public async connect<T>(options: SpecificRequestOptions<T>): Promise<HttpClientResult<T>> {
+		return this.request<T>({
 			...options,
 			method: 'CONNECT',
 		});
 	}
 }
+
+export { NanoHttpClient };
