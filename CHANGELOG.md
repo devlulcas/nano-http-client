@@ -1,5 +1,11 @@
 # nano-http-client
 
+## 3.0.2
+
+### Patch Changes
+
+- [`b7a0afe`](https://github.com/devlulcas/nano-http-client/commit/b7a0afe368a55e149cb6741c805b6d8a2e7b848e) Thanks [@devlulcas](https://github.com/devlulcas)! - fix package json entry points
+
 ## 3.0.1
 
 ### Patch Changes
