@@ -13,7 +13,7 @@ bund add nano-http-client
 First, you need to instantiate the client with a base URL.
 
 ```ts
-const client = new HttpClient({
+const client = new NanoHttpClient({
 	baseUrl: 'https://api.example.com',
 	headers: {
 		'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ const client = new HttpClient({
 By default, the client will use the `fetch` API to make requests. You can pass a custom fetch function to the client constructor.
 
 ```ts
-const client = new HttpClient({
+const client = new NanoHttpClient({
 	baseUrl: 'https://api.example.com',
 	customFetch: (url, options) => myCustomFetch(url, options),
 });
@@ -79,7 +79,7 @@ const getUsersResult = await client.get({
 ```
 
 The client will automatically serialize the body to JSON if the `Content-Type` header is set to `application/json`.
-You can pass this header in the HttpClient constructor or in the request options.
+You can pass this header in the NanoHttpClient constructor or in the request options.
 
 ```ts
 const postUserResult = await client.post({
@@ -92,7 +92,7 @@ const postUserResult = await client.post({
 ```
 
 The client will automatically parse the response body if the `Content-Type` header is set to `application/json`.
-You can pass this header in the HttpClient constructor or in the request options.
+You can pass this header in the NanoHttpClient constructor or in the request options.
 
 ```ts
 const getUsersResult = await client.get({
@@ -146,7 +146,7 @@ if (result.ok) {
 You can also pass a custom error handler to the client constructor.
 
 ```ts
-const client = new HttpClient({
+const client = new NanoHttpClient({
 	baseUrl: 'https://api.example.com',
 	customErrorHandler: (error) => {
 		console.log("I'm a custom error handler", error);
