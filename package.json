@@ -24,18 +24,18 @@
 	"author": "Lucas Alves Rego",
 	"license": "MIT",
 	"main": "dist/index.js",
-	"module": "dist/index.mjs",
+	"module": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
-			"import": "./dist/index.mjs",
-			"require": "./dist/index.js"
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
 		},
 		"./base": {
 			"types": "./dist/base.d.ts",
-			"import": "./dist/base.mjs",
-			"require": "./dist/base.js"
+			"import": "./dist/base.js",
+			"require": "./dist/base.cjs"
 		},
 		"./package.json": "./package.json"
 	},
