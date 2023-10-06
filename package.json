@@ -2,6 +2,7 @@
 	"name": "nano-http-client",
 	"version": "0.0.1",
 	"description": "A nano http client for node.js and the browser based on fetch",
+	"packageManager": "pnpm@8.8.0",
 	"scripts": {
 		"build": "tsup",
 		"dev": "tsup --watch",
