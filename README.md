@@ -5,6 +5,10 @@ First, you need to instantiate the client with a base URL.
 ```ts
 const client = new HttpClient({
 	baseUrl: 'https://api.example.com',
+	headers: {
+		'Content-Type': 'application/json',
+		Accept: 'application/json',
+	},
 });
 ```
 
@@ -20,32 +24,40 @@ const client = new HttpClient({
 Then you can use the client to make requests. The client has methods for all HTTP methods.
 
 ```ts
-const getUsersResult = await client.get('/users');
+const getUsersResult = await client.get({
+	url: '/users',
+});
 
-const headUserResult = await client.head('/users/1');
+const headUserResult = await client.head({
+	url: '/users',
+});
 
-const postUserResult = await client.post('/users', {
+const postUserResult = await client.post({
+	url: '/users',
 	body: { name: 'John' },
 });
 
-const putUserResult = await client.put('/users/1', {
+const putUserResult = await client.put({
+	url: '/users/1',
 	body: { name: 'John' },
 });
 
-const patchUserResult = await client.patch('/users/1', {
+const patchUserResult = await client.patch({
+	url: '/users/1',
 	body: { name: 'John' },
 });
 
-const deleteUserResult = await client.delete('/users/1');
+const deleteUserResult = await client.delete({
+	url: '/users/1',
+});
 ```
 
-You can pass a second argument to the request methods to configure the request.
+You can pass more options to the request.
 
 ```ts
-const getUsersResult = await client.get('/users', {
-	headers: {
-		'X-Custom-Header': 'Custom value',
-	},
+const getUsersResult = await client.get({
+	url: '/users',
+	headers: { 'X-Custom-Header': 'Custom value' },
 	searchParams: {
 		page: 1,
 		limit: 10,
@@ -60,10 +72,9 @@ The client will automatically serialize the body to JSON if the `Content-Type` h
 You can pass this header in the HttpClient constructor or in the request options.
 
 ```ts
-const postUserResult = await client.post('/users', {
-	headers: {
-		'Content-Type': 'application/json',
-	},
+const postUserResult = await client.post({
+	url: '/users',
+	headers: { 'Content-Type': 'application/json' },
 	body: {
 		name: 'John',
 	},
@@ -74,7 +85,8 @@ The client will automatically parse the response body if the `Content-Type` head
 You can pass this header in the HttpClient constructor or in the request options.
 
 ```ts
-const getUsersResult = await client.get('/users', {
+const getUsersResult = await client.get({
+	url: '/users',
 	headers: {
 		Accept: 'application/json',
 	},
@@ -85,7 +97,9 @@ By default the client will not throw on error results.
 
 ```ts
 // Safe interface - Does not throw, returns a result object with status code and data or error
-const result = await client.get('/users'); // { ok: true, data: unknown } | { ok: false, error: HttpError }
+const result = await client.get({
+	url: '/users',
+}); // { ok: true, data: unknown, response: Response } | { ok: false, error: HttpError }
 
 if (result.ok) {
 	// result.data is unknown, you need to pass a type guard to narrow it down or use a type assertion
@@ -99,12 +113,14 @@ if (result.ok) {
 We don't have opinions on how you do your type assertions, but we recommend using a type guard.
 
 ```ts
-// Result<{ ok: true, data: User[] }, { ok: false, error: HttpError }>
-const result = await client.get('/users', {
+// Result<{ ok: true, data: User[], response: Response }, { ok: false, error: HttpError }>
+const result = await client.get({
+	url: '/users',
 	actions: {
 		// Type guard for the result data
-		typeGuard: (data: unknown): data is User[] =>
-			Array.isArray(data) && data.every((item) => typeof item === 'object'),
+		typeGuard: (data: unknown): data is User[] => {
+			return	Array.isArray(data) && data.every((item) => typeof item === 'object'),
+		}
 	},
 });
 
@@ -128,10 +144,11 @@ const client = new HttpClient({
 });
 ```
 
-You can also just do a raw request with the `request` method.
+You can also just do a raw request with the `request` method. This is only available in the base client instance.
 
 ```ts
-const result = await client.request('/users', {
+const result = await client.request({
+	url: '/users',
 	method: 'GET',
 	headers: {
 		'Content-Type': 'application/json',
