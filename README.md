@@ -1,5 +1,15 @@
 # MICRO API CLIENT
 
+```bash
+npm install nano-http-client
+# or
+pnpm add nano-http-client
+# or
+yarn add nano-http-client
+# or
+bund add nano-http-client
+```
+
 First, you need to instantiate the client with a base URL.
 
 ```ts
