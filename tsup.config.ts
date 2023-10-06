@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig((opts) => ({
-	entryPoints: ['src/index.ts', 'src/base-http-client.ts'],
+	entryPoints: ['src/index.ts'],
 	splitting: true,
 	format: ['esm', 'cjs'],
 	dts: true,
