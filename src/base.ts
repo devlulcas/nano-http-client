@@ -53,8 +53,8 @@ class NanoHttpClientBase {
 		const { actions, url, ...requestInit } = options;
 
 		// Get the body from the request init
-		const body = this.getBodyFromRequestInit(requestInit);
-		const requestOptions = this.mergeRequestInit({ ...requestInit, body });
+		const mergedRequestInit = this.mergeRequestInit(options);
+		const body = this.getBody(mergedRequestInit);
 
 		// Create a new URL object with the url and the baseUrl
 		const urlObj = new URL(url, this.baseUrl);
@@ -108,13 +108,13 @@ class NanoHttpClientBase {
 	 * @param requestInit a request init object
 	 * @returns a BodyInit object that can be passed to the fetch api
 	 */
-	private getBodyFromRequestInit(requestInit: CustomRequestInit): BodyInit | undefined {
+	private getBody(requestInit: Pick<CustomRequestInit, "body" | "headers">): BodyInit | undefined {
 		// Skip if body is already a valid BodyInit object
 		if (
 			requestInit.body instanceof FormData ||
 			requestInit.body instanceof URLSearchParams ||
 			typeof requestInit.body === 'string' ||
-			requestInit.body === undefined
+			typeof requestInit.body === 'undefined'
 		) {
 			return requestInit.body;
 		}
@@ -145,10 +145,11 @@ class NanoHttpClientBase {
 	/**
 	 * Merge the default request options with the options passed to the request method.
 	 */
-	private mergeRequestInit(options?: RequestInit): RequestInit {
+	private mergeRequestInit(options?: RequestOptions<unknown>): RequestOptions<unknown> {
 		return {
 			...this.requestInit,
 			...options,
+			method: options?.method ?? "GET",
 			headers: {
 				...this.requestInit.headers,
 				...options?.headers,
