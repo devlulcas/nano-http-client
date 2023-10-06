@@ -1,7 +1,7 @@
 {
-	"name": "micro-http-client",
+	"name": "nano-http-client",
 	"version": "0.0.1",
-	"description": "A micro http client for node.js and the browser based on fetch",
+	"description": "A nano http client for node.js and the browser based on fetch",
 	"scripts": {
 		"build": "tsup",
 		"dev": "tsup --watch",
