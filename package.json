@@ -1,6 +1,6 @@
 {
 	"name": "nano-http-client",
-	"version": "3.0.3",
+	"version": "4.0.0",
 	"description": "A nano http client for node.js and the browser based on fetch",
 	"packageManager": "pnpm@8.8.0",
 	"scripts": {
@@ -29,13 +29,11 @@
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js",
-			"require": "./dist/index.cjs"
+			"import": "./dist/index.js"
 		},
 		"./base": {
 			"types": "./dist/base.d.ts",
-			"import": "./dist/base.js",
-			"require": "./dist/base.cjs"
+			"import": "./dist/base.js"
 		},
 		"./package.json": "./package.json"
 	},
