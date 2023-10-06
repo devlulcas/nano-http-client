@@ -1,5 +1,11 @@
 # nano-http-client
 
+## 3.0.3
+
+### Patch Changes
+
+- fix build folder
+
 ## 3.0.2
 
 ### Patch Changes
