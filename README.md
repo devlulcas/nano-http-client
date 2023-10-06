@@ -117,51 +117,6 @@ if (result.ok) {
 }
 ```
 
-You can pass use the `mapOk` and `mapError` options to map the result data or error to a custom type.
-
-```ts
-type UserResult = {
-	id: number;
-	firstName: string;
-	lastName: string;
-};
-
-type User = {
-	id: number;
-	name: string;
-};
-
-class CustomError extends Error {
-	constructor(public data: { message: string }) {
-		super(data.message);
-	}
-}
-
-// Result<{ ok: true, data: User[], response: Response }, { ok: false, error: CustomError }>
-const result = await client.get('/users', {
-	actions: {
-		// Type guard for the result data
-		typeGuard: (data: unknown): data is UserResult[] => Array.isArray(data),
-		// The type guard is used to narrow down the type of the data
-		mapOk: (data) =>
-			data.map((item) => ({
-				id: item.id,
-				name: `${item.firstName} ${item.lastName}`,
-			})),
-		// We return the error and let the user handle it
-		mapError: (error: HttpError) => new CustomError(error.data),
-	},
-});
-
-if (result.ok) {
-	// result.data is User[]
-	console.log(result.data);
-} else {
-	// result.error is CustomError
-	console.log(result.error);
-}
-```
-
 You can also pass a custom error handler to the client constructor.
 
 ```ts

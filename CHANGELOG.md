@@ -1,5 +1,11 @@
 # nano-http-client
 
+## 2.0.0
+
+### Major Changes
+
+- remove mapping functionality
+
 ## 1.0.0
 
 ### Major Changes
