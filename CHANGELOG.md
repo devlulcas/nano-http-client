@@ -1,5 +1,11 @@
 # nano-http-client
 
+## 4.0.1
+
+### Patch Changes
+
+- fixes the body parsing problem in the request and the response
+
 ## 4.0.0
 
 ### Major Changes
