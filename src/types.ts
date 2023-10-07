@@ -8,7 +8,7 @@ export type CustomRequestInit = Omit<RequestInit, 'searchParams' | 'body' | 'met
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	searchParams?: Record<string, any> | URLSearchParams;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	body?: Record<string, any> | FormData | URLSearchParams | string;
+	body?: Record<string, any> | BodyInit;
 };
 
 /**
