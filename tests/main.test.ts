@@ -1,25 +1,22 @@
-import { beforeEach, describe, expectTypeOf, test } from 'vitest';
+import { describe, expectTypeOf, test } from 'vitest';
 import { NanoHttpClient } from '../src';
 import { PORT } from './mocks/data';
 
 const client = new NanoHttpClient({
 	baseUrl: `http://127.0.0.1:${PORT}`,
 	headers: {
-		'Content-Type': 'application/json',
+		'Content-Type': 'application/json', // transforms the body to JSON and sets the header
+		Accept: 'application/json', // transforms the response to JSON and sets the header
 	},
 });
 
-describe('nano-http-client', async () => {
-	beforeEach(async () => {
-		await client.post({
-			url: '/reset',
-		});
-	});
-
+describe('nano-http-client against local api', async () => {
 	test('should request all users at / and the data type should be unknown', async ({ expect }) => {
 		const result = await client.get({
 			url: '/',
 		});
+
+		console.log(result);
 
 		expect(result.ok).toBe(true);
 
@@ -96,5 +93,37 @@ describe('nano-http-client', async () => {
 		} else {
 			throw new Error('This should be impossible - Result is not ok');
 		}
+	});
+
+	test('should update a user', async ({ expect }) => {
+		const result = await client.put({
+			url: '/',
+			body: {
+				id: 1,
+				name: 'Updated John Smith',
+			},
+			actions: {
+				typeGuard: (data): data is { user: { id: number; name: string } } => {
+					return typeof data === 'object' && data !== null && 'user' in data;
+				},
+			},
+		});
+
+		expect(result.ok).toBe(true);
+
+		if (result.ok) {
+			expect(result.data.user.name).toBe('Updated John Smith');
+			expectTypeOf(result.data).toEqualTypeOf<{ user: { id: number; name: string } }>();
+		} else {
+			throw new Error('This should be impossible - Result is not ok');
+		}
+	});
+
+	test('should delete a user', async ({ expect }) => {
+		const result = await client.delete({
+			url: '/1',
+		});
+
+		expect(result.ok).toBe(true);
 	});
 });
