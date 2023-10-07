@@ -125,21 +125,21 @@ We don't have opinions on how you do your type assertions, but we recommend usin
 ```ts
 // Result<{ ok: true, data: User[], response: Response }, { ok: false, error: HttpError }>
 const result = await client.get({
-	url: '/users',
-	actions: {
-		// Type guard for the result data
-		typeGuard: (data: unknown): data is User[] => {
-			return	Array.isArray(data) && data.every((item) => typeof item === 'object'),
-		}
-	},
+ url: '/users',
+ actions: {
+  // Type guard for the result data
+  typeGuard: (data: unknown): data is User[] => {
+   return Array.isArray(data) && data.every((item) => typeof item === 'object'),
+  }
+ },
 });
 
 if (result.ok) {
-	// result.data is User[]
-	console.log(result.data);
+ // result.data is User[]
+ console.log(result.data);
 } else {
-	// result.error is CustomError
-	console.log(result.error);
+ // result.error is CustomError
+ console.log(result.error);
 }
 ```
 
@@ -168,3 +168,12 @@ const result = await client.request({
 	},
 });
 ```
+
+## Todo
+
+- [ ] Add tests to other content types
+- [ ] Add tests to other HTTP methods
+- [ ] Add tests to other HTTP errors
+- [ ] Add tests to the raw request method
+- [ ] Add tests to the custom error handler
+- [ ] Add tests to the custom fetch function
