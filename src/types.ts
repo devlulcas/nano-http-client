@@ -14,17 +14,9 @@ export type CustomRequestInit = Omit<RequestInit, 'searchParams' | 'body' | 'met
 /**
  * A simplified RequestInit interface that only contains the properties that can be passed to the HttpClient constructor.
  */
-export type CommonRequestInit = Pick<
+export type HttpClientOptionsRequestInit = Pick<
 	RequestInit,
-	| 'headers'
-	| 'cache'
-	| 'credentials'
-	| 'integrity'
-	| 'keepalive'
-	| 'mode'
-	| 'redirect'
-	| 'referrer'
-	| 'referrerPolicy'
+	'headers' | 'cache' | 'credentials' | 'integrity' | 'keepalive' | 'mode' | 'redirect' | 'referrer' | 'referrerPolicy'
 >;
 
 /**
@@ -37,7 +29,7 @@ export type HttpClientOptions = {
 	baseUrl: string;
 	customFetch?: typeof fetch;
 	customErrorHandler?: (error: HttpError) => void;
-} & CommonRequestInit;
+} & HttpClientOptionsRequestInit;
 
 /**
  * The successful result of a HttpClient request.
