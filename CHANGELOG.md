@@ -1,5 +1,15 @@
 # nano-http-client
 
+## 4.1.0
+
+### Minor Changes
+
+- add support to cjs
+
+### Patch Changes
+
+- update the build files
+
 ## 4.0.1
 
 ### Patch Changes

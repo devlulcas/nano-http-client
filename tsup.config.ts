@@ -3,7 +3,7 @@ import { defineConfig } from 'tsup';
 export default defineConfig((opts) => ({
 	entryPoints: ['src/index.ts', 'src/base.ts'],
 	splitting: true,
-	format: ['esm'],
+	format: ['esm', 'cjs'],
 	dts: true,
 	clean: !opts.watch,
 	sourcemap: true,
