@@ -1,4 +1,8 @@
-# MICRO API CLIENT
+# NANO API CLIENT
+
+[NPM](https://www.npmjs.com/package/nano-http-client)
+
+[Github](https://github.com/devlulcas/nano-http-client)
 
 ```bash
 npm install nano-http-client
