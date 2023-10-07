@@ -1,49 +1,43 @@
-type User = {
-  id: number;
-  name: string;
-}
+export type User = {
+	id: number;
+	name: string;
+};
 
 export const PORT = 9898;
 
-const initialUsers: User[] = [
-  { id: 1, name: 'John Doe' },
-  { id: 2, name: 'Jane Doe' },
-]
+export const USERS: User[] = [
+	{ id: 1, name: 'John Doe' },
+	{ id: 2, name: 'Jane Doe' },
+];
 
 export class FakeRemoteService {
-  private users: User[] = initialUsers
- 
-  public async getUsers(): Promise<User[]> {
-    return this.users
-  }
+	public getUsers(): User[] {
+		return USERS;
+	}
 
-  public async getUser(id: number): Promise<User> {
-    const user = this.users.find(user => user.id === id)
-    if (!user) throw new Error('User not found')
-    return user
-  }
+	public getUser(id: number): User {
+		const user = USERS.find((user) => user.id === id);
+		if (!user) throw new Error('User not found');
+		return user;
+	}
 
-  public async createUser(user: User): Promise<User> {
-    console.log(user);
-    
-    this.users.push(user)
-    return user
-  }
+	public createUser(user: User): User {
+		return user;
+	}
 
-  public async updateUser(user: User): Promise<User> {
-    const index = this.users.findIndex(u => u.id === user.id)
-    if (index === -1) throw new Error('User not found')
-    this.users[index] = user
-    return user
-  }
+	public updateUser(user: User): User {
+		if (this.getUser(user.id)) {
+			return user;
+		}
 
-  public async deleteUser(id: number): Promise<void> {
-    const index = this.users.findIndex(u => u.id === id)
-    if (index === -1) throw new Error('User not found')
-    this.users.splice(index, 1)
-  }
+		throw new Error('User not found');
+	}
 
-  public async reset(): Promise<void> {
-    this.users = initialUsers
-  }
+	public deleteUser(id: number): void {
+		const user = this.getUser(id);
+
+		if (!user) {
+			throw new Error('User not found');
+		}
+	}
 }
