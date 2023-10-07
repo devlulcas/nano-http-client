@@ -22,8 +22,11 @@ const Err = <T>(error: HttpError): HttpClientResult<T> => ({
  * The response property contains the response from the server.
  */
 class HttpError extends Error {
-	constructor(public response?: Response) {
-		super(response?.statusText);
+	constructor(
+		public override message: string,
+		public response?: Response,
+	) {
+		super(message ?? response?.statusText ?? 'Unknown error');
 	}
 }
 
@@ -73,16 +76,21 @@ class NanoHttpClientBase {
 			}
 
 			// Sad path - the request was not successful
-			const error = new HttpError(response);
+			throw new HttpError('Request failed: ' + response.status, response);
+		} catch (error) {
+			const newError = new HttpError('Request failed');
 
-			// If a custom error handler is provided, call it
-			if (this.customErrorHandler) {
-				this.customErrorHandler(error);
+			if (error instanceof HttpError || error instanceof Error) {
+				newError.stack = newError.stack?.split('\n').slice(0, 2).join('\n') + '\n' + error.stack;
+			} else {
+				newError.stack = newError.stack?.split('\n').slice(0, 2).join('\n') + '\n' + String(error);
 			}
 
-			return Err(error);
-		} catch (error) {
-			return Err(new HttpError());
+			if (this.customErrorHandler) {
+				this.customErrorHandler(newError);
+			}
+
+			return Err(newError);
 		}
 	}
 
