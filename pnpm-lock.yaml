@@ -31,7 +31,7 @@ devDependencies:
     version: 5.0.0(eslint-config-prettier@9.0.0)(eslint@8.50.0)(prettier@3.0.3)
   hono:
     specifier: ^3.7.5
-    version: 3.7.5
+    version: 3.11.7
   prettier:
     specifier: ^3.0.3
     version: 3.0.3
@@ -1938,8 +1938,8 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: true
 
-  /hono@3.7.5:
-    resolution: {integrity: sha512-ZaaqAul84HHLXZKwwfH+eMInidwvRj9IdyOoI5Ze0v+WUOAAtQruml3QaUUWkOuI2Myt6IZAiUqkYklLK77k4g==}
+  /hono@3.11.7:
+    resolution: {integrity: sha512-TcfAq7IdipF+9coxnuzYlSSBXbm9mTyWjjagLCv/2ampboNcKJdi+XCK5G48mHQtpI5+9Rj3J4FfcGgw9vzIww==}
     engines: {node: '>=16.0.0'}
     dev: true
 
