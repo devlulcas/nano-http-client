@@ -1,6 +1,6 @@
 {
 	"name": "nano-http-client",
-	"version": "4.1.0",
+	"version": "5.0.0",
 	"description": "A nano http client for node.js and the browser based on fetch",
 	"scripts": {
 		"build": "tsup",
