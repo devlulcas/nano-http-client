@@ -4,7 +4,6 @@
 	"description": "A nano http client for node.js and the browser based on fetch",
 	"scripts": {
 		"build": "tsup",
-		"dev": "tsup --watch",
 		"typecheck": "tsc --noEmit"
 	},
 	"keywords": [

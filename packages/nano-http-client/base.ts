@@ -89,10 +89,6 @@ export class NanoHttpClientBase {
         response
       );
     } catch (error) {
-      if (error instanceof NanoHttpClientError) {
-        throw error;
-      }
-
       const newError = new NanoHttpClientError('Request failed');
 
       if (error instanceof NanoHttpClientError || error instanceof Error) {
