@@ -1,0 +1,48 @@
+{
+	"name": "nano-http-client",
+	"version": "4.1.0",
+	"description": "A nano http client for node.js and the browser based on fetch",
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"typecheck": "tsc --noEmit"
+	},
+	"keywords": [
+		"http",
+		"client",
+		"fetch",
+		"node",
+		"browser",
+		"micro",
+		"typesafe"
+	],
+	"author": "Lucas Alves Rego",
+	"license": "MIT",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"require": "./dist/index.cjs",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		},
+		"./base": {
+			"types": "./dist/base.d.ts",
+			"import": "./dist/base.js",
+			"require": "./dist/base.cjs"
+		},
+		"./package.json": "./package.json"
+	},
+	"files": [
+		"dist",
+		"package.json",
+		"LICENSE",
+		"README.md"
+	],
+	"devDependencies": {
+		"tsup": "^7.2.0",
+		"typescript": "^5.2.2"
+	}
+}

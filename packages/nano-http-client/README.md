@@ -18,7 +18,7 @@ First, you need to instantiate the client with a base URL.
 
 ```ts
 const client = new NanoHttpClient({
-	baseUrl: new URL('https://api.example.com'),
+	baseUrl: 'https://api.example.com',
 	headers: {
 		'Content-Type': 'application/json',
 		Accept: 'application/json',
@@ -26,36 +26,43 @@ const client = new NanoHttpClient({
 });
 ```
 
-By default, the client will use the `fetch` API to make requests.
+By default, the client will use the `fetch` API to make requests. You can pass a custom fetch function to the client constructor.
+
+```ts
+const client = new NanoHttpClient({
+	baseUrl: 'https://api.example.com',
+	customFetch: (url, options) => myCustomFetch(url, options),
+});
+```
 
 Then you can use the client to make requests. The client has methods for all HTTP methods.
 
 ```ts
 const getUsersResult = await client.get({
-	pathname: '/users',
+	url: '/users',
 });
 
 const headUserResult = await client.head({
-	pathname: '/users',
+	url: '/users',
 });
 
 const postUserResult = await client.post({
-	pathname: '/users',
+	url: '/users',
 	body: { name: 'John' },
 });
 
 const putUserResult = await client.put({
-	pathname: '/users/1',
+	url: '/users/1',
 	body: { name: 'John' },
 });
 
 const patchUserResult = await client.patch({
-	pathname: '/users/1',
+	url: '/users/1',
 	body: { name: 'John' },
 });
 
 const deleteUserResult = await client.delete({
-	pathname: '/users/1',
+	url: '/users/1',
 });
 ```
 
@@ -63,7 +70,7 @@ You can pass more options to the request.
 
 ```ts
 const getUsersResult = await client.get({
-	pathname: '/users',
+	url: '/users',
 	headers: { 'X-Custom-Header': 'Custom value' },
 	searchParams: {
 		page: 1,
@@ -80,7 +87,7 @@ You can pass this header in the NanoHttpClient constructor or in the request opt
 
 ```ts
 const postUserResult = await client.post({
-	pathname: '/users',
+	url: '/users',
 	headers: { 'Content-Type': 'application/json' },
 	body: {
 		name: 'John',
@@ -93,7 +100,7 @@ You can pass this header in the NanoHttpClient constructor or in the request opt
 
 ```ts
 const getUsersResult = await client.get({
-	pathname: '/users',
+	url: '/users',
 	headers: {
 		Accept: 'application/json',
 	},
@@ -105,7 +112,7 @@ By default the client will not throw on error results.
 ```ts
 // Safe interface - Does not throw, returns a result object with status code and data or error
 const result = await client.get({
-	pathname: '/users',
+	url: '/users',
 }); // { ok: true, data: unknown, response: Response } | { ok: false, error: HttpError }
 
 if (result.ok) {
@@ -122,7 +129,7 @@ We don't have opinions on how you do your type assertions, but we recommend usin
 ```ts
 // Result<{ ok: true, data: User[], response: Response }, { ok: false, error: HttpError }>
 const result = await client.get({
- pathname: '/users',
+ url: '/users',
  actions: {
   // Type guard for the result data
   typeGuard: (data: unknown): data is User[] => {
@@ -139,11 +146,23 @@ if (result.ok) {
  console.log(result.error);
 }
 ```
+
+You can also pass a custom error handler to the client constructor.
+
+```ts
+const client = new NanoHttpClient({
+	baseUrl: 'https://api.example.com',
+	customErrorHandler: (error) => {
+		console.log("I'm a custom error handler", error);
+	},
+});
+```
+
 You can also just do a raw request with the `request` method. This is only available in the base client instance.
 
 ```ts
 const result = await client.request({
-	pathname: '/users',
+	url: '/users',
 	method: 'GET',
 	headers: {
 		'Content-Type': 'application/json',
@@ -153,3 +172,12 @@ const result = await client.request({
 	},
 });
 ```
+
+## Todo
+
+- [ ] Add tests to other content types
+- [ ] Add tests to other HTTP methods
+- [ ] Add tests to other HTTP errors
+- [ ] Add tests to the raw request method
+- [ ] Add tests to the custom error handler
+- [ ] Add tests to the custom fetch function

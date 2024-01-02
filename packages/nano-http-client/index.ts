@@ -1,7 +1,7 @@
 import { NanoHttpClientBase } from './base.js';
 import { HttpClientOptions, HttpClientResult, SpecificRequestOptions } from './types.js';
 
-class NanoHttpClient extends NanoHttpClientBase {
+export class NanoHttpClient extends NanoHttpClientBase {
 	constructor(options: HttpClientOptions) {
 		super(options);
 	}
@@ -69,5 +69,3 @@ class NanoHttpClient extends NanoHttpClientBase {
 		});
 	}
 }
-
-export { NanoHttpClient };
