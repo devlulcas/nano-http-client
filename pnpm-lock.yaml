@@ -17,6 +17,10 @@ importers:
         version: 1.11.2
 
   packages/nano-http-client:
+    dependencies:
+      '@changesets/cli':
+        specifier: ^2.27.1
+        version: 2.27.1
     devDependencies:
       tsup:
         specifier: ^7.2.0
